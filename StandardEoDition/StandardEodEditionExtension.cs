@@ -54,6 +54,8 @@ public class StandardEodEditionExtension(
         eodProfileDeepCopy.Usec.Trader = modHelper.GetJsonDataFromFile<ProfileTraderTemplate>(
             pathToMod, Path.Combine("data", "traders.json"));
 
+        eodProfileDeepCopy.DescriptionLocaleKey = "Standard edition with EoD chips";
+
         databaseServer.GetTables().Templates.Profiles["Standard Eod Edition"] = eodProfileDeepCopy;
 
         return Task.CompletedTask;
