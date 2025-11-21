@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Version>1.0.0</Version>
+        <Configuration>Release</Configuration>
+        <AssemblyName>StandardEodEdition</AssemblyName>
+    </PropertyGroup>
+
+    <Target Name="RemoveDirectories" BeforeTargets="BeforeBuild">
+        <RemoveDir Directories="./bin/;./build/;./dist/" />
+    </Target>
+
+    <ItemGroup>
+        <PackageReference Include="SPTarkov.Common" Version="4.0.6"/>
+        <PackageReference Include="SPTarkov.DI" Version="4.0.6"/>
+        <PackageReference Include="SPTarkov.Server.Core" Version="4.0.6"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="data\bear_inventory.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="data\bonuses.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="data\hideout_areas.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="data\skill_issue.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="data\traders.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="data\usec_inventory.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+</Project>

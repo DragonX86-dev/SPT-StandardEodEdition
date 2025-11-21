@@ -8,7 +8,7 @@ using SPTarkov.Server.Core.Models.Utils;
 using SPTarkov.Server.Core.Servers;
 using Path = System.IO.Path;
 
-namespace StandardEoDition;
+namespace StandardEoDEdition;
 
 [Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 1)]
 public class StandardEodEditionExtension(

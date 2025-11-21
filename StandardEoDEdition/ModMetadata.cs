@@ -2,7 +2,7 @@
 using Range = SemanticVersioning.Range;
 using Version = SemanticVersioning.Version;
 
-namespace StandardEoDition;
+namespace StandardEoDEdition;
 
 public record ModMetadata : AbstractModMetadata
 {
