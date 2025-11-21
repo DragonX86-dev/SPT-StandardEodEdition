@@ -25,8 +25,8 @@ public class StandardEodEditionExtension(
         {
             DescriptionLocaleKey = serverLocale switch
             {
-                "en" => "Standard edition with EoD chips",
-                "ru" => "Стандартное издание с фишками из EoD",
+                "en" => "Standard edition with bonuses from Edge Of Darkness edition.",
+                "ru" => "Стандартное издание с бонусами из Edge Of Darkness издания.",
                 _ => ""
             }
         };
@@ -63,7 +63,7 @@ public class StandardEodEditionExtension(
         eodProfileCopy.Usec.Trader = modHelper.GetJsonDataFromFile<ProfileTraderTemplate>(
             pathToMod, Path.Combine("data", "traders.json"));
         
-        databaseServer.GetTables().Templates.Profiles["Standard Eod Edition"] = eodProfileCopy;
+        databaseServer.GetTables().Templates.Profiles["Standard EoD Edition"] = eodProfileCopy;
 
         return Task.CompletedTask;
     }
