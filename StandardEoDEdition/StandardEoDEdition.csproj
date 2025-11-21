@@ -15,12 +15,13 @@
 
     <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
         <ItemGroup>
-            <DataFiles Include="bin\$(Configuration)\net9.0\data\**\*" />
+            <DataFiles Include="bin\$(Configuration)\$(TargetFramework)\data\**\*" />
         </ItemGroup>
-        
-        <Copy SourceFiles="bin\$(Configuration)\net9.0\$(AssemblyName).dll" DestinationFolder="./build/SPT/user/mods/$(AssemblyName)/" />
-
-        <Copy SourceFiles="@(DataFiles)" DestinationFolder="./build/SPT/user/mods/$(AssemblyName)/data/%(RecursiveDir)" SkipUnchangedFiles="true" Condition="'@(DataFiles)' != ''" />
+        <Copy SourceFiles="bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).dll" 
+              DestinationFolder="./build/SPT/user/mods/$(AssemblyName)/" />
+        <Copy SourceFiles="@(DataFiles)" 
+              DestinationFolder="./build/SPT/user/mods/$(AssemblyName)/data/%(RecursiveDir)" 
+              SkipUnchangedFiles="true" Condition="'@(DataFiles)' != ''" />
     </Target>
 
     <Target Name="ZipOutputPath" AfterTargets="Build">
