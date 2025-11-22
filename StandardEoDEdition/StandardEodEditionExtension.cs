@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Text.Json;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Helpers;
@@ -21,15 +22,13 @@ public class StandardEodEditionExtension(
     {
         var serverLocale = localeService.GetDesiredServerLocale();
         var pathToMod = modHelper.GetAbsolutePathToModFolder(Assembly.GetExecutingAssembly());
-        var eodProfileCopy = databaseServer.GetTables().Templates.Profiles["Edge Of Darkness"] with
-        {
-            DescriptionLocaleKey = serverLocale switch
-            {
-                "en" => "Standard edition with bonuses from Edge Of Darkness edition.",
-                "ru" => "Стандартное издание с бонусами из Edge Of Darkness издания.",
-                _ => ""
-            }
-        };
+
+        var eodProfileCopy = DeepCopy(databaseServer.GetTables().Templates.Profiles["Edge Of Darkness"]);
+        
+        // var eodProfileCopy = databaseServer.GetTables().Templates.Profiles["Edge Of Darkness"] with
+        // {
+        //     
+        // };
 
         if (eodProfileCopy.Bear?.Character?.Hideout is null 
             || eodProfileCopy.Usec?.Character?.Hideout is null)
@@ -62,9 +61,27 @@ public class StandardEodEditionExtension(
             pathToMod, Path.Combine("data", "traders.json"));
         eodProfileCopy.Usec.Trader = modHelper.GetJsonDataFromFile<ProfileTraderTemplate>(
             pathToMod, Path.Combine("data", "traders.json"));
+
+        eodProfileCopy.DescriptionLocaleKey = serverLocale switch
+        {
+            "en" => "Standard edition with bonuses from Edge Of Darkness edition.",
+            "ru" => "Стандартное издание с бонусами из Edge Of Darkness издания.",
+            _ => ""
+        };
         
         databaseServer.GetTables().Templates.Profiles["Standard EoD Edition"] = eodProfileCopy;
 
         return Task.CompletedTask;
+    }
+    
+    private static T DeepCopy<T>(T obj)
+    {
+        var options = new JsonSerializerOptions
+        {
+            Converters = { new MongoIdConverter() }
+        };
+        
+        var json = JsonSerializer.Serialize(obj, options);
+        return JsonSerializer.Deserialize<T>(json, options)!;
     }
 }
