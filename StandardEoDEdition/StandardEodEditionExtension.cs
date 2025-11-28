@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using System.Text.Json;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Helpers;
@@ -7,12 +6,14 @@ using SPTarkov.Server.Core.Models.Eft.Common.Tables;
 using SPTarkov.Server.Core.Models.Utils;
 using SPTarkov.Server.Core.Servers;
 using SPTarkov.Server.Core.Services;
+using SPTarkov.Server.Core.Utils.Cloners;
 using Path = System.IO.Path;
 
 namespace StandardEoDEdition;
 
 [Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 1)]
 public class StandardEodEditionExtension(
+    ICloner cloner,
     ModHelper modHelper,
     LocaleService localeService,
     DatabaseServer databaseServer,
@@ -23,12 +24,7 @@ public class StandardEodEditionExtension(
         var serverLocale = localeService.GetDesiredServerLocale();
         var pathToMod = modHelper.GetAbsolutePathToModFolder(Assembly.GetExecutingAssembly());
 
-        var eodProfileCopy = DeepCopy(databaseServer.GetTables().Templates.Profiles["Edge Of Darkness"]);
-        
-        // var eodProfileCopy = databaseServer.GetTables().Templates.Profiles["Edge Of Darkness"] with
-        // {
-        //     
-        // };
+        var eodProfileCopy = cloner.Clone(databaseServer.GetTables().Templates.Profiles["Edge Of Darkness"])!;
 
         if (eodProfileCopy.Bear?.Character?.Hideout is null 
             || eodProfileCopy.Usec?.Character?.Hideout is null)
@@ -72,16 +68,5 @@ public class StandardEodEditionExtension(
         databaseServer.GetTables().Templates.Profiles["Standard EoD Edition"] = eodProfileCopy;
 
         return Task.CompletedTask;
-    }
-    
-    private static T DeepCopy<T>(T obj)
-    {
-        var options = new JsonSerializerOptions
-        {
-            Converters = { new MongoIdConverter() }
-        };
-        
-        var json = JsonSerializer.Serialize(obj, options);
-        return JsonSerializer.Deserialize<T>(json, options)!;
     }
 }
