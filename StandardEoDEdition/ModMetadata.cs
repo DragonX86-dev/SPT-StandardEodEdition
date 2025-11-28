@@ -6,7 +6,7 @@ namespace StandardEoDEdition;
 
 public record ModMetadata : AbstractModMetadata
 {
-    public override string ModGuid { get; init; } = "com.dragonx86.standard_eod_edition";
+    public override string ModGuid { get; init; } = "com.dragonx86.standard-eod-edition";
     public override string Name { get; init; } = "Standard EoD Edition";
     public override string Author { get; init; } = "DragonX86-dev";
     public override List<string>? Contributors { get; init; }
